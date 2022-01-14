@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Card } from "./Card";
 import { NavbarTop } from "./Navbar";
 import { SideBar } from "./SideBar";
 import { BallTriangle } from "react-loader-spinner";
+import { SongContext } from "../context/SongContext";
 
 const Style = styled.div`
   display: grid;
@@ -25,7 +26,7 @@ const Style = styled.div`
     flex-wrap: wrap;
     gap: 40px;
   }
-  .loading{
+  .loading {
     width: 100%;
     height: 70vh;
     display: flex;
@@ -34,6 +35,7 @@ const Style = styled.div`
   }
 `;
 export const Albums = () => {
+  const { handleSongs , handleToogle } = useContext(SongContext);
   const [data, setData] = useState([]);
   const handleFetch = async () => {
     const { data } = await axios.get(
@@ -45,6 +47,10 @@ export const Albums = () => {
   useEffect(() => {
     handleFetch();
   }, []);
+  const handleAlbum = (e) => {
+    handleSongs(e._id)
+    handleToogle()
+  };
   return (
     <Style>
       <SideBar />
@@ -57,7 +63,9 @@ export const Albums = () => {
         <div className="cardDiv">
           {data.length > 0 ? (
             data.map((e) => (
-              <Card key={e._id} image={e.image} name={e.name} artist={e.artist.name} />
+              <div onClick={() => handleAlbum(e)} key={e._id}>
+                <Card image={e.image} name={e.name} artist={e.artist.name} />
+              </div>
             ))
           ) : (
             <div className="loading">
