@@ -7032,6 +7032,11 @@ react-is@^17.0.1, react-is@^17.0.2:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-loader-spinner@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/react-loader-spinner/-/react-loader-spinner-5.0.6.tgz#fc833e74b4a90696c161521170cb0eef35ab3f7c"
+  integrity sha512-YZS89WkbNQcbOmro3234O5IqzvRAz4niiy6puR6t7Ae92jUoIcHReCNJwi69egUQR3eCRB2uyITk7Z97+xu2+w==
+
 react-redux@^7.2.6:
   version "7.2.6"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.2.6.tgz#49633a24fe552b5f9caf58feb8a138936ddfe9aa"
