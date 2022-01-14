@@ -5,10 +5,13 @@ import { getDataError, getDataLoading, getDataSucess} from '../redux/songs/actio
 import axios from 'axios'
 export const SongContext = createContext()
 export const SongContextProvider = ({children})=>{
-    const [Songs,setSongs] = useState("")
     const [toogle,setToogle] = useState(false)
+    const [signin,setSignin] = useState(false)
     const handleToogle = ()=>{
         setToogle(toogle ? false : true)
+    }
+    const handleSignin = ()=>{
+        setSignin(signin ? false : true)
     }
     const dispatch = useDispatch()
     const handleSongs = async (id)=>{
@@ -21,5 +24,5 @@ export const SongContextProvider = ({children})=>{
             dispatch(getDataError())
         }
     }
-    return <SongContext.Provider value={{Songs,handleSongs,toogle,handleToogle}} >{children}</SongContext.Provider>
+    return <SongContext.Provider value={{handleSongs,toogle,handleToogle ,handleSignin,signin}} >{children}</SongContext.Provider>
 }

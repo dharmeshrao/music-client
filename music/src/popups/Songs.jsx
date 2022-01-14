@@ -5,8 +5,8 @@ import { SongContext } from "../context/SongContext";
 import { IoCloseSharp } from "react-icons/io5";
 import { useContext, useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
-import { FiPlay } from 'react-icons/fi'
-import { BsArrowRepeat} from 'react-icons/bs'
+import { FiPlay } from "react-icons/fi";
+import { BsArrowRepeat } from "react-icons/bs";
 import { useSelector } from "react-redux";
 const Style = styled.div`
   width: 100vh;
@@ -50,8 +50,12 @@ const Style = styled.div`
       font-size: 19px;
       width: 120px;
       font-weight: 500;
-      background-color: #f5731c;
+      background-color: #ff645a;
       border-radius: 4px;
+      :hover {
+        background: #dc4f4a;
+        cursor: pointer;
+      }
     }
   }
   .songlist {
@@ -90,7 +94,7 @@ const Style = styled.div`
         font-size: 16px;
       }
       p {
-        color: #f5731c;
+        color: #ff645a;
         font-size: 16px;
         font-weight: 500;
       }
@@ -105,9 +109,9 @@ const Style = styled.div`
   .clear {
     clear: both;
   }
-  .loadingDiv{
-    width: 90vh;
-  height: 60vh;
+  .loadingDiv {
+    width: 95vh;
+    height: 60vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,7 +120,6 @@ const Style = styled.div`
 export const Songs = () => {
   const { toogle, handleToogle, Songs } = useContext(SongContext);
   const { data, loading } = useSelector((store) => store);
-  console.log(data);
   const customStyles = {
     content: {
       top: "50%",
@@ -150,9 +153,14 @@ export const Songs = () => {
             <div className="imgDiv">
               <Card image="https://a10.gaanacdn.com/gn_img/albums/oAJbDElKnL/AJbDB2p03n/size_l.webp" />
               <div className="buttonBox">
-                <div className="button"> <FiPlay/> Play</div>
-                {console.log(Songs)}
-                <div className="button"> <BsArrowRepeat/> Suffle</div>
+                <div className="button">
+                  {" "}
+                  <FiPlay /> Play
+                </div>
+                <div className="button">
+                  {" "}
+                  <BsArrowRepeat /> Suffle
+                </div>
               </div>
               <h1>Dharmesh</h1>
               <p>oh yeah oh yeah</p>
