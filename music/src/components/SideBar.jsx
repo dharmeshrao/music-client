@@ -3,9 +3,9 @@ import { SiApple } from "react-icons/si";
 import { RiSearchLine } from "react-icons/ri";
 const Style = styled.div`
   width: 300px;
-  position: fixed;
-  top:0;
-  z-index: 5;
+  /* position: fixed; */
+  /* top:0; */
+  /* z-index: 5; */
   height: 100vh;
   box-shadow: 3px 0px 5px #cecdcd;
   background-color: #eeeded;

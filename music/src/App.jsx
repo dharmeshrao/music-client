@@ -1,11 +1,9 @@
 import './App.css';
-import { NavbarTop} from './components/Navbar'
-import { SideBar } from './components/SideBar';
+import { Albums } from './components/Albums';
 function App() {
   return (
     <div className="App">
-      <NavbarTop/>
-      <SideBar/>
+      <Albums/>
     </div>
   );
 }

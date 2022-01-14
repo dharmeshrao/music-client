@@ -1,10 +1,7 @@
 import styled from "styled-components";
 const Navbar = styled.div`
   height: 70px;
-  position: fixed;
-  top: 0;
   width: 100%;
-  background-color: #dcdada;
   display: flex;
   align-items: center;
   padding: 20px;
