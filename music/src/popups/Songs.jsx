@@ -118,8 +118,8 @@ const Style = styled.div`
   }
 `;
 export const Songs = () => {
-  const { toogle, handleToogle, Songs } = useContext(SongContext);
-  const { data, loading } = useSelector((store) => store);
+  const { toogle, handleToogle } = useContext(SongContext);
+  const { data, loading } = useSelector((store) => store.songs);
   const customStyles = {
     content: {
       top: "50%",

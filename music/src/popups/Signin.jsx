@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Model from "react-modal";
 import { IoCloseSharp } from "react-icons/io5";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SongContext } from "../context/SongContext";
 const Style = styled.div`
   /* height: 455px; */
@@ -172,31 +172,50 @@ const customStyles = {
 
 Model.setAppElement("#root");
 export const Signin = () => {
-    const {signin,handleSignin} = useContext(SongContext)
+  const { signin, handleSignin } = useContext(SongContext);
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+  const handleChange = (e)=>{
+    const {value,name} = e.target;
+    setData({
+      ...data,
+      [name] : value
+    })
+  }
   return (
     <Model style={customStyles} isOpen={signin}>
       <Style>
         <div className="top_cross">
-        <IoCloseSharp
-                onClick={() => handleSignin()}
-                className="crossBtn"
-              />
+          <IoCloseSharp onClick={() => handleSignin()} className="crossBtn" />
         </div>
         <h1>Login</h1>
         <div className="inputBox">
-          <p>Phone number</p>
+          <p>Email</p>
           <div>
             <input
-            //   value={mynumber}
-              placeholder="Enter Your Number"
-            //   onChange={(e) => setnumber(e.target.value)}
+              //   value={mynumber}
+              placeholder="Enter Your Email"
+                onChange={(e) => handleChange(e)}
               type="text"
+              name="email"
             />
           </div>
         </div>
-        <button className="signup_button">
-          SEND OTP
-        </button>
+        <div className="inputBox">
+          <p>Password</p>
+          <div>
+            <input
+            name="password"
+              //   value={mynumber}
+              placeholder="Enter Your Password"
+              onChange={(e) => handleChange(e)}
+              type="password"
+            />
+          </div>
+        </div>
+        <button className="signup_button" onClick={()=>console.log(data)} >Login</button>
         <div className="lines">
           <span></span>
           <p>Or login via</p>
