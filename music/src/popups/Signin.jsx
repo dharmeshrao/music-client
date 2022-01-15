@@ -3,6 +3,9 @@ import Model from "react-modal";
 import { IoCloseSharp } from "react-icons/io5";
 import { useContext, useState } from "react";
 import { SongContext } from "../context/SongContext";
+import {getDataError, getDataLoading, getDataSucess} from '../redux/auth/action'
+import { useDispatch } from "react-redux";
+import axios from "axios";
 const Style = styled.div`
   /* height: 455px; */
   .noUserCheck {
@@ -172,15 +175,16 @@ const customStyles = {
 
 Model.setAppElement("#root");
 export const Signin = () => {
+  const dispatch = useDispatch()
   const { signin, handleSignin } = useContext(SongContext);
-  const [data, setData] = useState({
+  const [loginData, setData] = useState({
     email: "",
     password: "",
   });
   const handleChange = (e)=>{
     const {value,name} = e.target;
     setData({
-      ...data,
+      ...loginData,
       [name] : value
     })
   }
@@ -215,7 +219,18 @@ export const Signin = () => {
             />
           </div>
         </div>
-        <button className="signup_button" onClick={()=>console.log(data)} >Login</button>
+        <button className="signup_button" onClick={async ()=>{
+          dispatch(getDataLoading)
+          try{
+          const { data } = await axios.post("https://breakable-gold-outfit.cyclic.app/login",loginData)
+          localStorage.setItem('acessToken',JSON.stringify(data))
+          dispatch(getDataSucess(data))
+          }
+          catch(err){
+            dispatch(getDataError())
+            console.log(err);
+          }
+        }} >Login</button>
         <div className="lines">
           <span></span>
           <p>Or login via</p>
