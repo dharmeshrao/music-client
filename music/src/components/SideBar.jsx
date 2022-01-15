@@ -8,6 +8,9 @@ import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { SongContext } from "../context/SongContext";
 import debounce from "lodash.debounce";
+import { GrCirclePlay } from 'react-icons/gr'
+import { SiTorbrowser } from 'react-icons/si'
+import { FiRadio, FiPlay } from 'react-icons/fi'
 import {
   getDataError,
   getDataLoading,
@@ -17,10 +20,11 @@ import { useCallback } from "react";
 const Style = styled.div`
   width: 300px;
   height: 100vh;
-  box-shadow: 3px 0px 5px #cecdcd;
+  box-shadow: 1px 0px 8px #827f7f;
   background-color: #eeeded;
   .heading {
     padding: 20px;
+    margin-left: 20px;
     display: flex;
     align-items: center;
     h1 {
@@ -107,15 +111,38 @@ const Style = styled.div`
       }
     }
   }
+  .Buttons{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    div{
+      display: flex;
+      gap: 20px;
+      width: 166px;
+      border-radius: 4px;
+      padding: 10px;
+      align-items: center;
+      .redclr{
+        color: #ff645a;
+        font-size: 25px;
+      }
+      p{
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+  }
 `;
 const NewStyle = styled.div`
   width: 300px;
   height: 100vh;
-  box-shadow: 3px 0px 5px #cecdcd;
+  box-shadow: 1px 0px 8px #827f7f;
+
   background-color: #eeeded;
   .heading {
     padding: 20px;
     display: flex;
+    margin-left: 20px;
     align-items: center;
     h1 {
       font-weight: 700;
@@ -329,6 +356,20 @@ export const SideBar = () => {
         ) : (
           ""
         )}
+      </div>
+      <div className="Buttons">
+       <div>
+         <FiPlay className="redclr"/>
+         <p>Listen Now</p>
+       </div>
+       <div>
+         <SiTorbrowser className="redclr"/>
+         <p>Browse</p>
+       </div>
+       <div>
+         <FiRadio className="redclr"/>
+         <p>Radio</p>
+       </div>
       </div>
     </Style>
   );

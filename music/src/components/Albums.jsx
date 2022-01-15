@@ -60,11 +60,17 @@ export const Albums = () => {
   const [listData, setData] = useState([]);
   const [pagelimit,setPagelimit] = useState([])
   const handleFetch = async () => {
-    const { data } = await axios.get(
-      `https://breakable-gold-outfit.cyclic.app/albums/?page=${page}`
-    );
-    setPagelimit(data)
-    setData(data.album);
+    setData([])
+    try{
+      const { data } = await axios.get(
+        `https://breakable-gold-outfit.cyclic.app/albums/?page=${page}`
+      );
+      setPagelimit(data)
+      setData(data.album);
+    }
+    catch(err){
+    alert("no data")
+    }
   };
   
   useEffect(() => {
