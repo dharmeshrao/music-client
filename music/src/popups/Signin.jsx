@@ -6,6 +6,7 @@ import { SongContext } from "../context/SongContext";
 import {getDataError, getDataLoading, getDataSucess} from '../redux/auth/action'
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import { useSelector } from "react-redux";
 const Style = styled.div`
   /* height: 455px; */
   .noUserCheck {
@@ -188,6 +189,8 @@ export const Signin = () => {
       [name] : value
     })
   }
+  const {data} = useSelector((store)=>store.auth)
+  if(data){}
   return (
     <Model style={customStyles} isOpen={signin}>
       <Style>
@@ -225,6 +228,7 @@ export const Signin = () => {
           const { data } = await axios.post("https://breakable-gold-outfit.cyclic.app/login",loginData)
           localStorage.setItem('acessToken',JSON.stringify(data))
           dispatch(getDataSucess(data))
+          handleSignin()
           }
           catch(err){
             dispatch(getDataError())

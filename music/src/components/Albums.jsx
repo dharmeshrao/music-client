@@ -6,6 +6,7 @@ import { NavbarTop } from "./Navbar";
 import { SideBar } from "./SideBar";
 import { BallTriangle } from "react-loader-spinner";
 import { SongContext } from "../context/SongContext";
+import { useSelector } from "react-redux";
 
 const Style = styled.div`
   display: grid;
@@ -35,8 +36,9 @@ const Style = styled.div`
   }
 `;
 export const Albums = () => {
-  const { handleSongs , handleToogle } = useContext(SongContext);
-  const [data, setData] = useState([]);
+  const { handleSongs, handleToogle } = useContext(SongContext);
+  const [listData, setData] = useState([]);
+  const { data } = useSelector((store) => store.auth);
   const handleFetch = async () => {
     const { data } = await axios.get(
       "https://breakable-gold-outfit.cyclic.app/albums"
@@ -48,9 +50,42 @@ export const Albums = () => {
     handleFetch();
   }, []);
   const handleAlbum = (e) => {
-    handleSongs(e._id)
-    handleToogle()
+    handleSongs(e._id);
+    handleToogle();
   };
+  if (data) {
+    return (
+      <Style>
+        <SideBar />
+        <div>
+          <NavbarTop />
+          <div className="Shadow"></div>
+          <div className="browseMusic">
+            <p>Browse albums here</p>
+          </div>
+          <div className="cardDiv">
+            {listData.length > 0 ? (
+              listData.map((e) => (
+                <div onClick={() => handleAlbum(e)} key={e._id}>
+                  <Card image={e.image} name={e.name} artist={e.artist.name} />
+                </div>
+              ))
+            ) : (
+              <div className="loading">
+                <BallTriangle
+                  heigth="100"
+                  width="100"
+                  color="grey"
+                  arialLabel="loading-indicator"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </Style>
+    );
+  }
+
   return (
     <Style>
       <SideBar />
@@ -61,8 +96,8 @@ export const Albums = () => {
           <p>Browse albums here</p>
         </div>
         <div className="cardDiv">
-          {data.length > 0 ? (
-            data.map((e) => (
+          {listData.length > 0 ? (
+            listData.map((e) => (
               <div onClick={() => handleAlbum(e)} key={e._id}>
                 <Card image={e.image} name={e.name} artist={e.artist.name} />
               </div>
