@@ -151,7 +151,7 @@ export const Songs = () => {
         ) : (
           <>
             <div className="imgDiv">
-              <Card image={data?.artist?.coverPhoto || ""} />
+              <Card image={data?.image || ""} />
               <div className="buttonBox">
                 <div className="button">
                   {" "}

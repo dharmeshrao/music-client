@@ -253,9 +253,11 @@ export const SideBar = () => {
     try {
       setDetail(false);
       let id = data.user._id;
-      await axios.patch(
-        `https://breakable-gold-outfit.cyclic.app/artists/${id}`
+      console.log(id);
+     const ddata = await axios.patch(
+        `https://breakable-gold-outfit.cyclic.app/artists/${id}`,payload
       );
+      console.log(ddata);
       setLoad(false);
       setComplete(true);
       handleLogout();
