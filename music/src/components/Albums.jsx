@@ -128,7 +128,7 @@ export const Albums = () => {
               setPage(page-1)
 
             }}/>
-            <h3>{page}</h3>
+            <h3>{page} / {pagelimit.showAll}</h3>
             <FcNext className="abcd" onClick={()=>{
               if(page === pagelimit.showAll)return;
               setPage(page+1)

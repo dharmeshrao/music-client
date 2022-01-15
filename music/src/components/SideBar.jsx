@@ -210,6 +210,9 @@ const NewStyle = styled.div`
     margin-bottom: 10px;
     /* text-align: center; */
   }
+  .name{
+    font-size: 28px;
+  }
 `;
 
 export const SideBar = () => {
@@ -272,7 +275,7 @@ export const SideBar = () => {
 
   const handleDebounce = useCallback(
     debounce((next) => {
-      if(next.trim().length <= 2){setSlide([]);return}
+      if(next.trim().length <= 1){setSlide([]);return}
       fetch(`https://breakable-gold-outfit.cyclic.app/albums/search/?q=${next}`)
         .then((res) => res.json())
         .then((data) => setSlide(data.album));
@@ -292,7 +295,7 @@ export const SideBar = () => {
           <h1>Music</h1>
         </div>
         <div className="userDetails">
-          <h1>Hiii {data.user.name}</h1>
+          <h1 className="name">Hiii {data.user.name}</h1>
           <div className="imgDiv">
             <img src={data.user.coverPhoto} alt="" />
           </div>

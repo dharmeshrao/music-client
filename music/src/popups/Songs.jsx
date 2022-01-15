@@ -3,7 +3,7 @@ import { Card } from "../components/Card";
 import Modal from "react-modal/lib/components/Modal";
 import { SongContext } from "../context/SongContext";
 import { IoCloseSharp } from "react-icons/io5";
-import { useContext} from "react";
+import { useContext } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import { FiPlay } from "react-icons/fi";
 import { BsArrowRepeat } from "react-icons/bs";
@@ -26,7 +26,7 @@ const Style = styled.div`
     }
     h1 {
       font-weight: 600;
-      font-size: 38px;
+      font-size: 30px;
       padding-bottom: 5px;
       color: #5e5b5b;
     }
@@ -119,7 +119,7 @@ const Style = styled.div`
 `;
 export const Songs = () => {
   const { toogle, handleToogle } = useContext(SongContext);
-  const { loading } = useSelector((store) => store.songs);
+  const { loading, data } = useSelector((store) => store.songs);
   const customStyles = {
     content: {
       top: "50%",
@@ -151,7 +151,7 @@ export const Songs = () => {
         ) : (
           <>
             <div className="imgDiv">
-              <Card image="https://a10.gaanacdn.com/gn_img/albums/oAJbDElKnL/AJbDB2p03n/size_l.webp" />
+              <Card image={data?.artist?.coverPhoto || ""} />
               <div className="buttonBox">
                 <div className="button">
                   {" "}
@@ -162,8 +162,8 @@ export const Songs = () => {
                   <BsArrowRepeat /> Suffle
                 </div>
               </div>
-              <h1>Dharmesh</h1>
-              <p>oh yeah oh yeah</p>
+              <h1>{data?.artist?.name || "Demo"}</h1>
+              <p>{data?.genre || "Demo"}</p>
             </div>
             <div className="songlist">
               <IoCloseSharp
@@ -171,7 +171,7 @@ export const Songs = () => {
                 className="crossBtn"
               />
               <div className="clear"></div>
-              <h1>Listen to this </h1>
+              <h1>Album</h1>
               <p>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam,
                 blanditiis! Ex ipsum sed cupiditate, molestiae eligendi quos
@@ -179,20 +179,48 @@ export const Songs = () => {
                 doloremque asperiores, autem adipisci.
               </p>
               <div className="list">
-                <div className="row">
+                {data?.songs?.length > 0 ? (
+                  data.songs.map((e, i) => (
+                    <div key={e._id} className="row">
+                      <div>
+                        <p>{i + 1}</p>
+                        <h3>{e.name}</h3>
+                      </div>
+                      <p>{e.duration}</p>
+                    </div>
+                  ))
+                ) : (
                   <div>
-                    <p>1</p>
-                    <h3>name here</h3>
+                    <div className="row">
+                      <div>
+                        <p>1</p>
+                        <h3>Demo</h3>
+                      </div>
+                      <p>3.21</p>
+                    </div>
+                    <div className="row">
+                      <div>
+                        <p>2</p>
+                        <h3>DemoSong</h3>
+                      </div>
+                      <p>3.09</p>
+                    </div>
+                    <div className="row">
+                      <div>
+                        <p>3</p>
+                        <h3>DemoSong</h3>
+                      </div>
+                      <p>2.41</p>
+                    </div>
+                    <div className="row">
+                      <div>
+                        <p>4</p>
+                        <h3>DemoSong</h3>
+                      </div>
+                      <p>3.07</p>
+                    </div>
                   </div>
-                  <p>3.21</p>
-                </div>
-                <div className="row">
-                  <div>
-                    <p>1</p>
-                    <h3>name here</h3>
-                  </div>
-                  <p>3.21</p>
-                </div>
+                )}
               </div>
             </div>
           </>
