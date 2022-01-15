@@ -253,16 +253,13 @@ export const SideBar = () => {
     try {
       setDetail(false);
       let id = data.user._id;
-      console.log(id);
-     const ddata = await axios.patch(
+    await axios.patch(
         `https://breakable-gold-outfit.cyclic.app/artists/${id}`,payload
       );
-      console.log(ddata);
       setLoad(false);
       setComplete(true);
       handleLogout();
     } catch (err) {
-      console.log(err);
       setLoad(false);
       setError(true);
     }

@@ -15,8 +15,8 @@ const Style = styled.div`
   margin: auto;
   display: grid;
   padding: 10px;
-  gap: 20px;
-  grid-template-columns: 270px 1fr;
+  /* gap: 20px; */
+  grid-template-columns: 250px 1fr;
   .imgDiv {
     padding: 10px;
     p {
@@ -26,7 +26,7 @@ const Style = styled.div`
     }
     h1 {
       font-weight: 600;
-      font-size: 30px;
+      font-size: 25px;
       padding-bottom: 5px;
       color: #5e5b5b;
     }
@@ -34,7 +34,7 @@ const Style = styled.div`
   .buttonBox {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 92%;
     position: relative;
     top: -20px;
     z-index: 1;
@@ -48,7 +48,7 @@ const Style = styled.div`
       border: none;
       color: white;
       font-size: 19px;
-      width: 120px;
+      width: 100px;
       font-weight: 500;
       background-color: #ff645a;
       border-radius: 4px;

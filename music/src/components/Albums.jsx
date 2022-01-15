@@ -61,7 +61,7 @@ const Style = styled.div`
   .cardDiv {
     display: flex;
     flex-wrap: wrap;
-    gap: 40px;
+    gap: 10px;
   }
   .loading {
     width: 100%;

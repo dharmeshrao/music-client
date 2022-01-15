@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 const Style = styled.div`
-  width: 250px;
-  height: 270px;
+  width: 230px;
+  height: 250px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
@@ -11,9 +11,9 @@ const Style = styled.div`
     height: 220px;
     img {
       object-fit: cover;
-      width: 250px;
+      width: 210px;
       border-radius: 4px;
-      height: 220px;
+      height: 200px;
       transition:.2s ease-in-out;
     }
     img:hover{

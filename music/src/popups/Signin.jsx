@@ -13,6 +13,11 @@ const Style = styled.div`
     color: red;
     text-align: center;
   }
+  .warning {
+    color: #084d2f;
+    margin-top: 10px;
+    /* text-align: center; */
+  }
   .hide {
     display: none;
   }
@@ -48,6 +53,7 @@ const Style = styled.div`
       input {
         width: 100%;
         border: none;
+        background-color: inherit;
         padding: 5px;
       }
       input:focus {
@@ -176,6 +182,10 @@ const customStyles = {
 
 Model.setAppElement("#root");
 export const Signin = () => {
+  const [load, setLoad] = useState(false);
+  const [error, setError] = useState(false);
+  const [detail, setDetail] = useState(false);
+  const [complete, setComplete] = useState(false);
   const dispatch = useDispatch()
   const { signin, handleSignin } = useContext(SongContext);
   const [loginData, setData] = useState({
@@ -222,16 +232,33 @@ export const Signin = () => {
             />
           </div>
         </div>
+        <p className="warning">
+              {load
+                ? "loading..."
+                : error
+                ? "Please Enter Valid Details"
+                : detail
+                ? "Fill all details"
+                : complete
+                ? ""
+                : ""}
+            </p>
         <button className="signup_button" onClick={async ()=>{
           dispatch(getDataLoading)
+          setLoad(true);
           try{
+            setDetail(false);
           const { data } = await axios.post("https://breakable-gold-outfit.cyclic.app/login",loginData)
           localStorage.setItem('acessToken',JSON.stringify(data))
           dispatch(getDataSucess(data))
+          setLoad(false);
+          setComplete(true);
           handleSignin()
           }
           catch(err){
             dispatch(getDataError())
+            setLoad(false);
+            setError(true);
             console.log(err);
           }
         }} >Login</button>
