@@ -3,7 +3,7 @@ import { Card } from "../components/Card";
 import Modal from "react-modal/lib/components/Modal";
 import { SongContext } from "../context/SongContext";
 import { IoCloseSharp } from "react-icons/io5";
-import { useContext, useEffect, useState } from "react";
+import { useContext} from "react";
 import { BallTriangle } from "react-loader-spinner";
 import { FiPlay } from "react-icons/fi";
 import { BsArrowRepeat } from "react-icons/bs";
@@ -119,7 +119,7 @@ const Style = styled.div`
 `;
 export const Songs = () => {
   const { toogle, handleToogle } = useContext(SongContext);
-  const { data, loading } = useSelector((store) => store.songs);
+  const { loading } = useSelector((store) => store.songs);
   const customStyles = {
     content: {
       top: "50%",

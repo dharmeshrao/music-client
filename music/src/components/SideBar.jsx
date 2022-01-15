@@ -5,11 +5,15 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { useContext } from "react";
+import { SongContext } from "../context/SongContext";
+import debounce from "lodash.debounce";
 import {
   getDataError,
   getDataLoading,
   getDataSucess,
 } from "../redux/auth/action";
+import { useCallback } from "react";
 const Style = styled.div`
   width: 300px;
   height: 100vh;
@@ -192,6 +196,8 @@ export const SideBar = () => {
   const [error, setError] = useState(false);
   const [detail, setDetail] = useState(false);
   const [complete, setComplete] = useState(false);
+  const [slide, setSlide] = useState([]);
+  const { handleSongs, handleToogle } = useContext(SongContext);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPayload({
@@ -217,7 +223,7 @@ export const SideBar = () => {
     try {
       setDetail(false);
       let id = data.user._id;
-      const newData = await axios.patch(
+      await axios.patch(
         `https://breakable-gold-outfit.cyclic.app/artists/${id}`
       );
       setLoad(false);
@@ -229,6 +235,28 @@ export const SideBar = () => {
       setError(true);
     }
   };
+  const handleChangeAgain = (e) => {
+    if(e.target.value.trim().length <= 1){
+      setSlide([]);
+      return;
+    }
+    handleDebounce(e.target.value);
+  };
+
+  const handleDebounce = useCallback(
+    debounce((next) => {
+      if(next.trim().length <= 2){setSlide([]);return}
+      fetch(`https://breakable-gold-outfit.cyclic.app/albums/search/?q=${next}`)
+        .then((res) => res.json())
+        .then((data) => setSlide(data.album));
+    }, 500),
+    []
+  );
+  const handleSongsTwo = (e)=>{
+    handleSongs(e);
+    handleToogle();
+  }
+
   if (data.token) {
     return (
       <NewStyle>
@@ -286,13 +314,21 @@ export const SideBar = () => {
       <div className="hiddenslide">
         <div className="searchBox">
           <RiSearchLine />
-          <input type="text" placeholder="Search here" />
+          <input
+            type="text"
+            onChange={(e) => handleChangeAgain(e)}
+            placeholder="Search here"
+          />
         </div>
-        <div className="slide">
-          <div>hello here</div>
-          <div>hello here</div>
-          <div>hello here</div>
-        </div>
+        {slide.length > 0 ? (
+          <div className="slide">
+            {slide.map((e) => (
+              <div onClick={()=>handleSongsTwo(e._id)} key={e._id}>{e.name}</div>
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </Style>
   );
