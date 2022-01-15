@@ -53,6 +53,56 @@ const Style = styled.div`
     }
     font-size: 25px;
   }
+  .hiddenslide {
+    display: flex;
+    flex-direction: column;
+    .slide {
+      height: 50vh;
+      width: 84%;
+      margin: auto;
+      background-color: white;
+      box-shadow: 0px 6px 6px gray;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      overflow: scroll;
+      overflow-x: hidden;
+      /* width */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: #f89c95;
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+      div {
+        padding: 15px;
+        border-bottom: 1px solid #cccaca;
+        display: flex;
+        align-items: center;
+        height: 35px;
+        color: #ff645a;
+        font-weight: 600;
+        width: 100%;
+        border-radius: 5px;
+        :hover {
+          background-color: #f2f1f1;
+          cursor: pointer;
+        }
+      }
+    }
+  }
 `;
 const NewStyle = styled.div`
   width: 300px;
@@ -124,7 +174,7 @@ const NewStyle = styled.div`
       }
     }
   }
-  .warning{
+  .warning {
     color: #084d2f;
     margin-bottom: 10px;
     /* text-align: center; */
@@ -136,12 +186,12 @@ export const SideBar = () => {
     name: "",
     email: "",
   });
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { data } = useSelector((store) => store.auth);
   const [load, setLoad] = useState(false);
   const [error, setError] = useState(false);
-  const [detail,setDetail] = useState(false)
-  const [complete,setComplete] = useState(false)
+  const [detail, setDetail] = useState(false);
+  const [complete, setComplete] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPayload({
@@ -153,27 +203,30 @@ const dispatch = useDispatch()
     dispatch(getDataLoading());
     try {
       dispatch(getDataSucess([]));
-      localStorage.removeItem("acessToken")
+      localStorage.removeItem("acessToken");
     } catch (err) {
       dispatch(getDataError());
     }
   };
   const handleUpdate = async () => {
-    if (!payload.name.trim || !payload.email.trim()){ setDetail(true);return false};
+    if (!payload.name.trim || !payload.email.trim()) {
+      setDetail(true);
+      return false;
+    }
     setLoad(true);
     try {
-      setDetail(false)
-      let id = data.user._id
-    const newData = await axios.patch(
+      setDetail(false);
+      let id = data.user._id;
+      const newData = await axios.patch(
         `https://breakable-gold-outfit.cyclic.app/artists/${id}`
       );
-      setLoad(false)
-      setComplete(true)
-      handleLogout()
+      setLoad(false);
+      setComplete(true);
+      handleLogout();
     } catch (err) {
       console.log(err);
-      setLoad(false)
-      setError(true)
+      setLoad(false);
+      setError(true);
     }
   };
   if (data.token) {
@@ -206,7 +259,17 @@ const dispatch = useDispatch()
               placeholder={data.user.email}
               id=""
             />
-            <p className="warning">{load ? "loading..." : error ? "Something went wrong" : detail ? "Fill all details" : complete ? "Updated Sucessfully" : "" }</p>
+            <p className="warning">
+              {load
+                ? "loading..."
+                : error
+                ? "Something went wrong"
+                : detail
+                ? "Fill all details"
+                : complete
+                ? "Updated Sucessfully"
+                : ""}
+            </p>
             <button onClick={() => handleUpdate()}>Update</button>
           </div>
         </div>
@@ -220,9 +283,16 @@ const dispatch = useDispatch()
         <SiApple className="logo" />
         <h1>MUSIC</h1>
       </div>
-      <div className="searchBox">
-        <RiSearchLine />
-        <input type="text" placeholder="Search here" />
+      <div className="hiddenslide">
+        <div className="searchBox">
+          <RiSearchLine />
+          <input type="text" placeholder="Search here" />
+        </div>
+        <div className="slide">
+          <div>hello here</div>
+          <div>hello here</div>
+          <div>hello here</div>
+        </div>
       </div>
     </Style>
   );
