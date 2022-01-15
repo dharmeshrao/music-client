@@ -7,7 +7,7 @@ import { SideBar } from "./SideBar";
 import { BallTriangle } from "react-loader-spinner";
 import { SongContext } from "../context/SongContext";
 import { useSelector } from "react-redux";
-import { FcPrevious,FcNext } from 'react-icons/fc'
+import { FcPrevious, FcNext } from "react-icons/fc";
 
 const Style = styled.div`
   display: grid;
@@ -20,21 +20,38 @@ const Style = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    div{
+    .select {
+      width: 250px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      select {
+        width: 70px;
+        font-size: 18px;
+        border: none;
+        :focus {
+          outline: none;
+        }
+        :after {
+          outline: none;
+        }
+      }
+    }
+    div {
       margin-right: 50px;
       width: 100px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
-      h3{
+      h3 {
         font-size: 22px;
         font-weight: 500;
       }
     }
-    .abcd{
-    color: #6d6d6d !important;
-  }
+    .abcd {
+      color: #6d6d6d !important;
+    }
   }
   .Shadow {
     width: 100%;
@@ -56,23 +73,22 @@ const Style = styled.div`
 `;
 export const Albums = () => {
   const { handleSongs, handleToogle } = useContext(SongContext);
-  const [page,setPage] = useState(1)
+  const [page, setPage] = useState(1);
   const [listData, setData] = useState([]);
-  const [pagelimit,setPagelimit] = useState([])
+  const [pagelimit, setPagelimit] = useState([]);
   const handleFetch = async () => {
-    setData([])
-    try{
+    setData([]);
+    try {
       const { data } = await axios.get(
         `https://breakable-gold-outfit.cyclic.app/albums/?page=${page}`
       );
-      setPagelimit(data)
+      setPagelimit(data);
       setData(data.album);
-    }
-    catch(err){
-    alert("no data")
+    } catch (err) {
+      alert("no data");
     }
   };
-  
+
   useEffect(() => {
     handleFetch();
   }, [page]);
@@ -80,7 +96,7 @@ export const Albums = () => {
     handleSongs(e._id);
     handleToogle();
   };
-  const {data} = useSelector((store) => store.auth);
+  const { data } = useSelector((store) => store.auth);
   if (data?.token) {
     let newData = data.user.albums;
     return (
@@ -122,17 +138,31 @@ export const Albums = () => {
         <div className="Shadow"></div>
         <div className="browseMusic">
           <p>Browse albums here</p>
-          <div>
-            <FcPrevious className={page === 1 ? "abcd" : ""} onClick={()=>{
-              if(page === 1)return;
-              setPage(page-1)
-
-            }}/>
-            <h3>{page} / {pagelimit.showAll}</h3>
-            <FcNext className="abcd" onClick={()=>{
-              if(page === pagelimit.showAll)return;
-              setPage(page+1)
-            }} className="abcd"/>
+          <div className="select">
+            <select name="sort" id="">
+              <option value="">Sort</option>
+              <option value="">2021</option>
+            </select>
+            <div>
+              <FcPrevious
+                className={page === 1 ? "abcd" : ""}
+                onClick={() => {
+                  if (page === 1) return;
+                  setPage(page - 1);
+                }}
+              />
+              <h3>
+                {page} / {pagelimit.showAll}
+              </h3>
+              <FcNext
+                className="abcd"
+                onClick={() => {
+                  if (page === pagelimit.showAll) return;
+                  setPage(page + 1);
+                }}
+                className="abcd"
+              />
+            </div>
           </div>
         </div>
         <div className="cardDiv">
