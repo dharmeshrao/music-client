@@ -2,6 +2,14 @@ import styled from "styled-components";
 import { SiApple } from "react-icons/si";
 import { RiSearchLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import {
+  getDataError,
+  getDataLoading,
+  getDataSucess,
+} from "../redux/auth/action";
 const Style = styled.div`
   width: 300px;
   height: 100vh;
@@ -66,29 +74,29 @@ const NewStyle = styled.div`
       cursor: pointer;
     }
   }
-.userDetails{
-  padding: 20px;
-}
-.imgDiv{
+  .userDetails {
+    padding: 20px;
+  }
+  .imgDiv {
     width: 260px;
     display: flex;
     align-items: center;
     margin: auto;
     height: 300px;
-    img{
+    img {
       object-fit: cover;
       width: 100%;
       border-radius: 4px;
     }
   }
-  .userForm{
+  .userForm {
     display: flex;
     flex-direction: column;
-    gap:5px;
-    label{
+    gap: 5px;
+    label {
       font-weight: 600;
     }
-    input{
+    input {
       height: 40px;
       border: none;
       border-radius: 4px;
@@ -100,7 +108,7 @@ const NewStyle = styled.div`
         outline: none;
       }
     }
-    button{
+    button {
       background-color: #ff645a;
       border: none;
       width: 120px;
@@ -111,15 +119,63 @@ const NewStyle = styled.div`
       border-radius: 4px;
       padding: 5px;
       :hover {
-      background: #dc4f4a;
-      cursor: pointer;
+        background: #dc4f4a;
+        cursor: pointer;
+      }
     }
-    }
+  }
+  .warning{
+    color: #084d2f;
+    margin-bottom: 10px;
+    /* text-align: center; */
   }
 `;
 
 export const SideBar = () => {
+  const [payload, setPayload] = useState({
+    name: "",
+    email: "",
+  });
+const dispatch = useDispatch()
   const { data } = useSelector((store) => store.auth);
+  const [load, setLoad] = useState(false);
+  const [error, setError] = useState(false);
+  const [detail,setDetail] = useState(false)
+  const [complete,setComplete] = useState(false)
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPayload({
+      ...payload,
+      [name]: value,
+    });
+  };
+  const handleLogout = () => {
+    dispatch(getDataLoading());
+    try {
+      dispatch(getDataSucess([]));
+      localStorage.removeItem("acessToken")
+    } catch (err) {
+      dispatch(getDataError());
+    }
+  };
+  const handleUpdate = async () => {
+    if (!payload.name.trim || !payload.email.trim()){ setDetail(true);return false};
+    setLoad(true);
+    try {
+      setDetail(false)
+      let id = data.user._id
+    const newData = await axios.patch(
+        `https://breakable-gold-outfit.cyclic.app/artists/${id}`
+      );
+      setLoad(false)
+      setComplete(true)
+      handleLogout()
+    } catch (err) {
+      console.log(err);
+      setLoad(false)
+      setError(true)
+    }
+  };
   if (data.token) {
     return (
       <NewStyle>
@@ -128,17 +184,31 @@ export const SideBar = () => {
           <h1>Music</h1>
         </div>
         <div className="userDetails">
-        <h1>Hiii {data.user.name}</h1>
-        <div className="imgDiv">
-          <img src={data.user.coverPhoto} alt="" />
-        </div>
-        <div className="userForm">
-        <label htmlFor="">Your Name</label>
-        <input placeholder="Update Name" type="text" />
-        <label htmlFor="">Your Email</label>
-        <input type="text" name="" placeholder="Update Email" id="" />
-        <button>Update</button>
-      </div>
+          <h1>Hiii {data.user.name}</h1>
+          <div className="imgDiv">
+            <img src={data.user.coverPhoto} alt="" />
+          </div>
+          <div className="userForm">
+            <label htmlFor="">Your Name</label>
+            <input
+              placeholder={data.user.name}
+              name="name"
+              value={payload.name}
+              onChange={(e) => handleChange(e)}
+              type="text"
+            />
+            <label htmlFor="">Your Email</label>
+            <input
+              type="text"
+              name="email"
+              value={payload.email}
+              onChange={(e) => handleChange(e)}
+              placeholder={data.user.email}
+              id=""
+            />
+            <p className="warning">{load ? "loading..." : error ? "Something went wrong" : detail ? "Fill all details" : complete ? "Updated Sucessfully" : "" }</p>
+            <button onClick={() => handleUpdate()}>Update</button>
+          </div>
         </div>
       </NewStyle>
     );
