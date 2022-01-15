@@ -14,18 +14,31 @@ const Style = styled.div`
       width: 250px;
       border-radius: 4px;
       height: 220px;
+      transition:.2s ease-in-out;
     }
+    img:hover{
+        opacity: 0.7;
+        position: relative;
+        top:-5px;
+      }
   }
   h3 {
     padding-top: 4px;
     font-weight: 700;
     color: #6b6a6a;
     font-size: 17px;
+    :hover{
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
   p {
     font: 14px;
     font-weight: 500;
     color: #807d7d;
+    :hover{
+      cursor: pointer;
+    }
   }
 `;
 export const Card = ({image,name,artist}) => {

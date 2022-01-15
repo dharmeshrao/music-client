@@ -7,6 +7,7 @@ import { SideBar } from "./SideBar";
 import { BallTriangle } from "react-loader-spinner";
 import { SongContext } from "../context/SongContext";
 import { useSelector } from "react-redux";
+import { FcPrevious,FcNext } from 'react-icons/fc'
 
 const Style = styled.div`
   display: grid;
@@ -16,6 +17,24 @@ const Style = styled.div`
     font-size: 25px;
     font-weight: 600;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    div{
+      margin-right: 50px;
+      width: 100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      h3{
+        font-size: 22px;
+        font-weight: 500;
+      }
+    }
+    .abcd{
+    color: #6d6d6d !important;
+  }
   }
   .Shadow {
     width: 100%;
@@ -37,17 +56,20 @@ const Style = styled.div`
 `;
 export const Albums = () => {
   const { handleSongs, handleToogle } = useContext(SongContext);
+  const [page,setPage] = useState(1)
   const [listData, setData] = useState([]);
+  const [pagelimit,setPagelimit] = useState([])
   const handleFetch = async () => {
     const { data } = await axios.get(
-      "https://breakable-gold-outfit.cyclic.app/albums"
+      `https://breakable-gold-outfit.cyclic.app/albums/?page=${page}`
     );
+    setPagelimit(data)
     setData(data.album);
   };
   
   useEffect(() => {
     handleFetch();
-  }, []);
+  }, [page]);
   const handleAlbum = (e) => {
     handleSongs(e._id);
     handleToogle();
@@ -94,6 +116,18 @@ export const Albums = () => {
         <div className="Shadow"></div>
         <div className="browseMusic">
           <p>Browse albums here</p>
+          <div>
+            <FcPrevious className={page === 1 ? "abcd" : ""} onClick={()=>{
+              if(page === 1)return;
+              setPage(page-1)
+
+            }}/>
+            <h3>{page}</h3>
+            <FcNext className="abcd" onClick={()=>{
+              if(page === pagelimit.showAll)return;
+              setPage(page+1)
+            }} className="abcd"/>
+          </div>
         </div>
         <div className="cardDiv">
           {listData.length > 0 ? (
