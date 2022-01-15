@@ -38,14 +38,13 @@ const Style = styled.div`
 export const Albums = () => {
   const { handleSongs, handleToogle } = useContext(SongContext);
   const [listData, setData] = useState([]);
-  const { data } = useSelector((store) => store.auth);
   const handleFetch = async () => {
     const { data } = await axios.get(
       "https://breakable-gold-outfit.cyclic.app/albums"
     );
     setData(data.album);
   };
-
+  
   useEffect(() => {
     handleFetch();
   }, []);
@@ -53,7 +52,9 @@ export const Albums = () => {
     handleSongs(e._id);
     handleToogle();
   };
-  if (data) {
+  const {data} = useSelector((store) => store.auth);
+  if (data?.token) {
+    let newData = data.user.albums;
     return (
       <Style>
         <SideBar />
@@ -61,11 +62,11 @@ export const Albums = () => {
           <NavbarTop />
           <div className="Shadow"></div>
           <div className="browseMusic">
-            <p>Browse albums here</p>
+            <p>Browse your albums here {data.user.name}</p>
           </div>
           <div className="cardDiv">
-            {listData.length > 0 ? (
-              listData.map((e) => (
+            {newData.length > 0 ? (
+              newData.map((e) => (
                 <div onClick={() => handleAlbum(e)} key={e._id}>
                   <Card image={e.image} name={e.name} artist={e.artist.name} />
                 </div>
@@ -85,7 +86,6 @@ export const Albums = () => {
       </Style>
     );
   }
-
   return (
     <Style>
       <SideBar />
