@@ -102,7 +102,6 @@ export const Albums = () => {
     }
   };
   const handleSelect = (e) => {
-    console.log(e);
     if (e.target.value.trim() === 'yes') {
       if (year) {
         return history.push(`/?year=${year}`);
