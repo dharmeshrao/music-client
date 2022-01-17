@@ -253,7 +253,7 @@ export const SideBar = () => {
       setDetail(false);
       let id = data.user._id;
     await axios.patch(
-        `https://music-app-demo-kuch.herokuapp.com//artists/${id}`,payload
+        `https://music-app-demo-kuch.herokuapp.com/artists/${id}`,payload
       );
       setLoad(false);
       setComplete(true);
