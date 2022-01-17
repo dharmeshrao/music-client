@@ -121,6 +121,13 @@ export const Albums = () => {
     history.push(`/?page=${e}`);
   };
   const { data } = useSelector((store) => store.auth);
+
+ if(x > pagelimit.showAll || pagelimit.showAll === 0){
+   return <div>404 No Page Found</div>
+ }
+
+
+
   if (data?.token) {
     let newData = data.user.albums;
     return (
@@ -185,7 +192,7 @@ export const Albums = () => {
               <FcPrevious
                 className={page === 1 ? "abcd" : ""}
                 onClick={() => {
-                  if (page === 1) return;
+                  if (page <= 1) return;
                   setPage(page - 1);
                   handlePageDec(page - 1);
                 }}
@@ -196,7 +203,7 @@ export const Albums = () => {
               <FcNext
                 className="abcd"
                 onClick={() => {
-                  if (page === pagelimit.showAll) return;
+                  if (page >= pagelimit.showAll) return;
                   setPage(page + 1);
                   handlePageInc(page + 1);
                 }}
