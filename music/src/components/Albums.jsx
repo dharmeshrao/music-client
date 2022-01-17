@@ -102,7 +102,8 @@ export const Albums = () => {
     }
   };
   const handleSelect = (e) => {
-    if (!e) {
+    console.log(e);
+    if (e.target.value.trim() === 'yes') {
       if (year) {
         return history.push(`/?year=${year}`);
       } else return history.push("/");
@@ -140,84 +141,89 @@ export const Albums = () => {
   if (x > pagelimit.showAll || pagelimit.showAll === 0) {
     return (
       <>
-        <Style>
-          <SideBar />
-          <div>
-            <NavbarTop />
-            <div className="Shadow"></div>
-            <div className="browseMusic">
-              <p>Browse albums here</p>
-              <div className="select">
-                <select onChange={(e) => handleSelect(e)} name="sort" id="">
-                  {y ? (
-                    <option hidden value="">
-                      {y}
-                    </option>
-                  ) : (
-                    <option value="">Sort By Genre</option>
-                  )}
-                  <option defaultValue={y === "Pop"} value="Pop">
-                    Pop
-                  </option>
-                  <option defaultValue={y === "Jazz"} value="Jazz">
-                    Jazz
-                  </option>
-                  <option defaultValue={y === "Dance"} value="Dance">
-                    Dance
-                  </option>
-                  <option defaultValue={y === "Hiphop"} value="Hiphop">
-                    Hiphop
-                  </option>
-                  <option defaultValue={y === "Folk"} value="Folk">
-                    Folk
-                  </option>
-                </select>
-                <select
-                  onChange={(e) => handleYear(e.target.value)}
-                  name="sort"
-                  id=""
-                >
-                  {year ? (
-                    <option hidden value="">
-                      {year}
-                    </option>
-                  ) : (
-                    <option hidden value="">
-                      Sort By Year
-                    </option>
-                  )}
-                  <option value="">Show All</option>
-                  <option value="2021">2021</option>
-                  <option value="2020">2020</option>
-                  <option value="2019">2019</option>
-                  <option value="2018">2018</option>
-                </select>
-                <div>
-                  <FcPrevious
-                    className={page === 1 ? "abcd" : ""}
-                    onClick={() => {
-                      if (page <= 1) return;
-                      setPage(page - 1);
-                      handlePageDec(page - 1);
-                    }}
-                  />
-                  <h3>
-                    {x || 1} / {pagelimit.showAll}
-                  </h3>
-                  <FcNext
-                    className="abcd"
-                    onClick={() => {
-                      if (page >= pagelimit.showAll) return;
-                      setPage(page + 1);
-                      handlePageInc(page + 1);
-                    }}
-                  />
-                </div>
-              </div>
+    <Style>
+      <SideBar />
+      <div>
+        <NavbarTop />
+        <div className="Shadow"></div>
+        <div className="browseMusic">
+          <p>Browse albums here</p>
+          <div className="select">
+            <select onChange={(e) => handleSelect(e)} name="sort" id="">
+              {y ? (
+                <option hidden value="">
+                  {y}
+                </option>
+              ) : (
+                <option hidden value="">
+                  Sort By Genre
+                </option>
+              )}
+              <option value="yes">Show All</option>
+              <option defaultValue={y === "Pop"} value="Pop">
+                Pop
+              </option>
+              <option defaultValue={y === "Jazz"} value="Jazz">
+                Jazz
+              </option>
+              <option defaultValue={y === "Dance"} value="Dance">
+                Dance
+              </option>
+              <option defaultValue={y === "Hiphop"} value="Hiphop">
+                Hiphop
+              </option>
+              <option defaultValue={y === "Folk"} value="Folk">
+                Folk
+              </option>
+            </select>
+            <select
+              onChange={(e) => handleYear(e.target.value)}
+              name="sort"
+              id=""
+            >
+              {year ? (
+                <option hidden value="">
+                  {year}
+                </option>
+              ) : (
+                <option hidden value="">
+                  Sort By Year
+                </option>
+              )}
+              <option value="">Show All</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
+            </select>
+            <div>
+              <FcPrevious
+                className={page === 1 ? "abcd" : ""}
+                onClick={() => {
+                  if (page <= 1) return;
+                  setPage(page - 1);
+                  handlePageDec(page - 1);
+                }}
+              />
+              <h3>
+                {x || 1} / {pagelimit.showAll}
+              </h3>
+              <FcNext
+                className="abcd"
+                onClick={() => {
+                  if (page >= pagelimit.showAll) return;
+                  setPage(page + 1);
+                  handlePageInc(page + 1);
+                }}
+              />
             </div>
-            <div className="cardDiv">No Data Found</div>
           </div>
-        </Style>
+        </div>
+        <div className="cardDiv">
+          No Data Found
+        </div>
+      </div>
+    </Style>
       </>
     );
   }
@@ -274,7 +280,7 @@ export const Albums = () => {
                   Sort By Genre
                 </option>
               )}
-              <option value="">Show All</option>
+              <option value="yes">Show All</option>
               <option defaultValue={y === "Pop"} value="Pop">
                 Pop
               </option>
