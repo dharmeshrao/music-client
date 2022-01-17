@@ -254,7 +254,7 @@ export const SideBar = () => {
       setDetail(false);
       let id = data.user._id;
     await axios.patch(
-        `https://breakable-gold-outfit.cyclic.app/artists/${id}`,payload
+        `https://music-app-demo-kuch.herokuapp.com/artists/${id}`,payload
       );
       setLoad(false);
       setComplete(true);
@@ -275,7 +275,7 @@ export const SideBar = () => {
   const handleDebounce = useCallback(
     debounce((next) => {
       if(next.trim().length <= 1){setSlide([]);return}
-      fetch(`https://breakable-gold-outfit.cyclic.app/albums/search/?q=${next}`)
+      fetch(`https://music-app-demo-kuch.herokuapp.com/albums/search/?q=${next}`)
         .then((res) => res.json())
         .then((data) => setSlide(data.album));
     }, 500),

@@ -6,13 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import { SongContextProvider } from "./context/SongContext";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import { BrowserRouter } from "react-router-dom";
+import { PageContext, PageContextProvider } from "./context/PageContext";
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <SongContextProvider>
-        <App />
-      </SongContextProvider>
-    </Provider>
+    <BrowserRouter>
+      <PageContextProvider>
+        <Provider store={store}>
+          <SongContextProvider>
+            <App />
+          </SongContextProvider>
+        </Provider>
+      </PageContextProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

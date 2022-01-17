@@ -17,7 +17,7 @@ export const SongContextProvider = ({children})=>{
     const handleSongs = async (id)=>{
         dispatch(getDataLoading())
         try{
-            const {data} = await axios.get(`https://breakable-gold-outfit.cyclic.app/albums/${id}`)
+            const {data} = await axios.get(`https://music-app-demo-kuch.herokuapp.com/albums/${id}`)
             dispatch(getDataSucess(data.album))
         }
         catch(err){

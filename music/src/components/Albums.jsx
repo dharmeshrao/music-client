@@ -4,11 +4,15 @@ import styled from "styled-components";
 import { Card } from "./Card";
 import { NavbarTop } from "./Navbar";
 import { SideBar } from "./SideBar";
+import React from 'react'
+import { useLocation } from "react-router-dom";
 import { BallTriangle } from "react-loader-spinner";
 import { SongContext } from "../context/SongContext";
 import { useSelector } from "react-redux";
 import { FcPrevious, FcNext } from "react-icons/fc";
-
+import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { PageContext } from "../context/PageContext";
 const Style = styled.div`
   display: grid;
   gap: 35px;
@@ -71,16 +75,26 @@ const Style = styled.div`
     align-items: center;
   }
 `;
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
+
 export const Albums = () => {
   const { handleSongs, handleToogle } = useContext(SongContext);
-  const [page, setPage] = useState(1);
+  const query = useQuery()
+  let x = query.get("page")
+  const {page,setPage} = useContext(PageContext)
   const [listData, setData] = useState([]);
   const [pagelimit, setPagelimit] = useState([]);
+  const history = useHistory()
   const handleFetch = async () => {
     setData([]);
     try {
       const { data } = await axios.get(
-        `https://breakable-gold-outfit.cyclic.app/albums/?page=${page}`
+        `https://music-app-demo-kuch.herokuapp.com/albums/?page=${x || 1}`
       );
       setPagelimit(data);
       setData(data.album);
@@ -88,14 +102,20 @@ export const Albums = () => {
       alert("no data");
     }
   };
-
   useEffect(() => {
     handleFetch();
-  }, [page]);
+    if(x)setPage(+x)
+  }, [x]);
   const handleAlbum = (e) => {
     handleSongs(e._id);
     handleToogle();
   };
+  const handlePageInc = (e)=>{
+    history.push(`/?page=${e}`)
+  }
+  const handlePageDec = (e)=>{
+    history.push(`/?page=${e}`)
+  }
   const { data } = useSelector((store) => store.auth);
   if (data?.token) {
     let newData = data.user.albums;
@@ -144,24 +164,25 @@ export const Albums = () => {
               <option value="">2021</option>
             </select>
             <div>
-              <FcPrevious
-                className={page === 1 ? "abcd" : ""}
-                onClick={() => {
-                  if (page === 1) return;
-                  setPage(page - 1);
-                }}
-              />
+                <FcPrevious
+                  className={page === 1 ? "abcd" : ""}
+                  onClick={() => {
+                    if (page === 1) return;
+                    setPage(page - 1);
+                    handlePageDec(page-1)
+                  }}
+               />
               <h3>
-                {page} / {pagelimit.showAll}
+                {x || 1} / {pagelimit.showAll}
               </h3>
-              <FcNext
-                className="abcd"
-                onClick={() => {
-                  if (page === pagelimit.showAll) return;
-                  setPage(page + 1);
-                }}
-                className="abcd"
-              />
+                <FcNext
+                  className="abcd"
+                  onClick={() => {
+                    if (page === pagelimit.showAll) return;
+                    setPage(page+1)
+                    handlePageInc(page+1)
+                  }}
+                />
             </div>
           </div>
         </div>
