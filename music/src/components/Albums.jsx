@@ -5,7 +5,7 @@ import { Card } from "./Card";
 import { NavbarTop } from "./Navbar";
 import { SideBar } from "./SideBar";
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useRouteMatch } from "react-router-dom";
 import { BallTriangle } from "react-loader-spinner";
 import { SongContext } from "../context/SongContext";
 import { useSelector } from "react-redux";
@@ -81,16 +81,19 @@ export const Albums = () => {
   const { handleSongs, handleToogle } = useContext(SongContext);
   const query = useQuery();
   let x = query.get("page");
-  let y = query.get("genre")
+  let y = query.get("genre");
   const { page, setPage } = useContext(PageContext);
   const [listData, setData] = useState([]);
   const [pagelimit, setPagelimit] = useState([]);
+  const { path, url } = useRouteMatch();
   const history = useHistory();
   const handleFetch = async () => {
     setData([]);
     try {
       const { data } = await axios.get(
-        `https://music-app-demo-kuch.herokuapp.com/albums/data/?page=${x || 1}&genre=${y || ""}`
+        `https://music-app-demo-kuch.herokuapp.com/albums/data/?page=${
+          x || 1
+        }&genre=${y || ""}`
       );
       setPagelimit(data);
       setData(data.album);
@@ -98,10 +101,15 @@ export const Albums = () => {
       alert("no data");
     }
   };
+  const handleSelect = (e) => {
+    let x = e.target.value;
+    if (x === "") return history.push("/");
+    history.push(`/?genre=${e.target.value}`);
+  };
   useEffect(() => {
     handleFetch();
     if (x) setPage(+x);
-  }, [x,y]);
+  }, [x, y]);
   const handleAlbum = (e) => {
     handleSongs(e._id);
     handleToogle();
@@ -112,12 +120,6 @@ export const Albums = () => {
   const handlePageDec = (e) => {
     history.push(`/?page=${e}`);
   };
-  const handleSelect = (e)=>{
-    // console.log(e.target.value);
-    let x = e.target.value;
-    if(x === "")return history.push("/")
-    history.push(`/?genre=${e.target.value}`)
-  }
   const { data } = useSelector((store) => store.auth);
   if (data?.token) {
     let newData = data.user.albums;
@@ -161,13 +163,23 @@ export const Albums = () => {
         <div className="browseMusic">
           <p>Browse albums here</p>
           <div className="select">
-            <select onChange={(e)=>handleSelect(e)} name="sort" id="">
-              <option selected value={""}>{"Sort By Genre"}</option>
-              <option selected={y==="Pop"} value="Pop">Pop</option>
-              <option selected={y==="Jazz"} value="Jazz">Jazz</option>
-              <option selected={y==="Dance"} value="Dance">Dance</option>
-              <option selected={y==="Hiphop"} value="Hiphop">Hiphop</option>
-              <option selected={y==="Folk"} value="Folk">Folk</option>
+            <select onChange={(e) => handleSelect(e)} name="sort" id="">
+              <option value="">{y ? "Show All" : "Sort By Genre"}</option>
+              <option defaultValue={y === "Pop"} value="Pop">
+                Pop
+              </option>
+              <option defaultValue={y === "Jazz"} value="Jazz">
+                Jazz
+              </option>
+              <option defaultValue={y === "Dance"} value="Dance">
+                Dance
+              </option>
+              <option defaultValue={y === "Hiphop"} value="Hiphop">
+                Hiphop
+              </option>
+              <option defaultValue={y === "Folk"} value="Folk">
+                Folk
+              </option>
             </select>
             <div>
               <FcPrevious

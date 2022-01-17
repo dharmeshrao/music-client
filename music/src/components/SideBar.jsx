@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { SongContext } from "../context/SongContext";
 import debounce from "lodash.debounce";
-import { GrCirclePlay } from 'react-icons/gr'
 import { SiTorbrowser } from 'react-icons/si'
 import { FiRadio, FiPlay } from 'react-icons/fi'
 import {
@@ -254,7 +253,7 @@ export const SideBar = () => {
       setDetail(false);
       let id = data.user._id;
     await axios.patch(
-        `https://music-app-demo-kuch.herokuapp.com/artists/${id}`,payload
+        `https://music-app-demo-kuch.herokuapp.com//artists/${id}`,payload
       );
       setLoad(false);
       setComplete(true);
