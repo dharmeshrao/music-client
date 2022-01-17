@@ -24,7 +24,7 @@ const Style = styled.div`
     justify-content: space-between;
     align-items: center;
     .select {
-      width: 350px;
+      width: 550px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -82,10 +82,10 @@ export const Albums = () => {
   const query = useQuery();
   let x = query.get("page");
   let y = query.get("genre");
+  let year = query.get("year");
   const { page, setPage } = useContext(PageContext);
   const [listData, setData] = useState([]);
   const [pagelimit, setPagelimit] = useState([]);
-  const { path, url } = useRouteMatch();
   const history = useHistory();
   const handleFetch = async () => {
     setData([]);
@@ -93,7 +93,7 @@ export const Albums = () => {
       const { data } = await axios.get(
         `https://music-app-demo-kuch.herokuapp.com/albums/data/?page=${
           x || 1
-        }&genre=${y || ""}`
+        }&genre=${y || ""}&year=${year || ""}`
       );
       setPagelimit(data);
       setData(data.album);
@@ -102,14 +102,21 @@ export const Albums = () => {
     }
   };
   const handleSelect = (e) => {
-    let x = e.target.value;
-    if (x === "") return history.push("/");
+    if(year){
+      history.push(`/?year=${year}&genre=${e.target.value}`)
+    }
     history.push(`/?genre=${e.target.value}`);
+  };
+  const handleYear = (e) => {
+    if(y){
+      history.push(`/?genre=${y}&year=${e}`)
+    }
+    else history.push(`/?year=${e}`)
   };
   useEffect(() => {
     handleFetch();
     if (x) setPage(+x);
-  }, [x, y]);
+  }, [x, y, year]);
   const handleAlbum = (e) => {
     handleSongs(e._id);
     handleToogle();
@@ -122,11 +129,9 @@ export const Albums = () => {
   };
   const { data } = useSelector((store) => store.auth);
 
- if(x > pagelimit.showAll || pagelimit.showAll === 0){
-   return <div>404 No Page Found</div>
- }
-
-
+  if (x > pagelimit.showAll || pagelimit.showAll === 0) {
+    return <div>404 No Page Found</div>;
+  }
 
   if (data?.token) {
     let newData = data.user.albums;
@@ -171,7 +176,13 @@ export const Albums = () => {
           <p>Browse albums here</p>
           <div className="select">
             <select onChange={(e) => handleSelect(e)} name="sort" id="">
-              <option value="">{y ? "Show All" : "Sort By Genre"}</option>
+              {y ? (
+                <option hidden value="">
+                  {y}
+                </option>
+              ) : (
+                <option value="">Sort By Genre</option>
+              )}
               <option defaultValue={y === "Pop"} value="Pop">
                 Pop
               </option>
@@ -187,6 +198,23 @@ export const Albums = () => {
               <option defaultValue={y === "Folk"} value="Folk">
                 Folk
               </option>
+            </select>
+            <select
+              onChange={(e) => handleYear(e.target.value)}
+              name="sort"
+              id=""
+            >
+              {year ? (
+                <option hidden value="">
+                  {year}
+                </option>
+              ) : (
+                <option value="">Sort By Year</option>
+              )}
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
             </select>
             <div>
               <FcPrevious
@@ -215,7 +243,7 @@ export const Albums = () => {
           {listData.length > 0 ? (
             listData.map((e) => (
               <div onClick={() => handleAlbum(e)} key={e._id}>
-                <Card image={e.image} name={e.name} artist={e.artist.name} />
+                <Card image={e.image} name={e.name} artist={e.year} />
               </div>
             ))
           ) : (
