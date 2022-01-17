@@ -4,13 +4,12 @@ import styled from "styled-components";
 import { Card } from "./Card";
 import { NavbarTop } from "./Navbar";
 import { SideBar } from "./SideBar";
-import React from 'react'
+import React from "react";
 import { useLocation } from "react-router-dom";
 import { BallTriangle } from "react-loader-spinner";
 import { SongContext } from "../context/SongContext";
 import { useSelector } from "react-redux";
 import { FcPrevious, FcNext } from "react-icons/fc";
-import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { PageContext } from "../context/PageContext";
 const Style = styled.div`
@@ -25,18 +24,15 @@ const Style = styled.div`
     justify-content: space-between;
     align-items: center;
     .select {
-      width: 250px;
+      width: 350px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       select {
-        width: 70px;
+        width: 150px;
         font-size: 18px;
         border: none;
         :focus {
-          outline: none;
-        }
-        :after {
           outline: none;
         }
       }
@@ -81,20 +77,20 @@ function useQuery() {
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-
 export const Albums = () => {
   const { handleSongs, handleToogle } = useContext(SongContext);
-  const query = useQuery()
-  let x = query.get("page")
-  const {page,setPage} = useContext(PageContext)
+  const query = useQuery();
+  let x = query.get("page");
+  let y = query.get("genre")
+  const { page, setPage } = useContext(PageContext);
   const [listData, setData] = useState([]);
   const [pagelimit, setPagelimit] = useState([]);
-  const history = useHistory()
+  const history = useHistory();
   const handleFetch = async () => {
     setData([]);
     try {
       const { data } = await axios.get(
-        `https://music-app-demo-kuch.herokuapp.com/albums/?page=${x || 1}`
+        `https://music-app-demo-kuch.herokuapp.com/albums/data/?page=${x || 1}&genre=${y || ""}`
       );
       setPagelimit(data);
       setData(data.album);
@@ -104,17 +100,23 @@ export const Albums = () => {
   };
   useEffect(() => {
     handleFetch();
-    if(x)setPage(+x)
-  }, [x]);
+    if (x) setPage(+x);
+  }, [x,y]);
   const handleAlbum = (e) => {
     handleSongs(e._id);
     handleToogle();
   };
-  const handlePageInc = (e)=>{
-    history.push(`/?page=${e}`)
-  }
-  const handlePageDec = (e)=>{
-    history.push(`/?page=${e}`)
+  const handlePageInc = (e) => {
+    history.push(`/?page=${e}`);
+  };
+  const handlePageDec = (e) => {
+    history.push(`/?page=${e}`);
+  };
+  const handleSelect = (e)=>{
+    // console.log(e.target.value);
+    let x = e.target.value;
+    if(x === "")return history.push("/")
+    history.push(`/?genre=${e.target.value}`)
   }
   const { data } = useSelector((store) => store.auth);
   if (data?.token) {
@@ -159,30 +161,34 @@ export const Albums = () => {
         <div className="browseMusic">
           <p>Browse albums here</p>
           <div className="select">
-            <select name="sort" id="">
-              <option value="">Sort</option>
-              <option value="">2021</option>
+            <select onChange={(e)=>handleSelect(e)} name="sort" id="">
+              <option selected value={""}>{"Sort By Genre"}</option>
+              <option selected={y==="Pop"} value="Pop">Pop</option>
+              <option selected={y==="Jazz"} value="Jazz">Jazz</option>
+              <option selected={y==="Dance"} value="Dance">Dance</option>
+              <option selected={y==="Hiphop"} value="Hiphop">Hiphop</option>
+              <option selected={y==="Folk"} value="Folk">Folk</option>
             </select>
             <div>
-                <FcPrevious
-                  className={page === 1 ? "abcd" : ""}
-                  onClick={() => {
-                    if (page === 1) return;
-                    setPage(page - 1);
-                    handlePageDec(page-1)
-                  }}
-               />
+              <FcPrevious
+                className={page === 1 ? "abcd" : ""}
+                onClick={() => {
+                  if (page === 1) return;
+                  setPage(page - 1);
+                  handlePageDec(page - 1);
+                }}
+              />
               <h3>
                 {x || 1} / {pagelimit.showAll}
               </h3>
-                <FcNext
-                  className="abcd"
-                  onClick={() => {
-                    if (page === pagelimit.showAll) return;
-                    setPage(page+1)
-                    handlePageInc(page+1)
-                  }}
-                />
+              <FcNext
+                className="abcd"
+                onClick={() => {
+                  if (page === pagelimit.showAll) return;
+                  setPage(page + 1);
+                  handlePageInc(page + 1);
+                }}
+              />
             </div>
           </div>
         </div>

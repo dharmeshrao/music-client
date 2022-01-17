@@ -7,7 +7,7 @@ import { SongContextProvider } from "./context/SongContext";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { BrowserRouter } from "react-router-dom";
-import { PageContext, PageContextProvider } from "./context/PageContext";
+import { PageContextProvider } from "./context/PageContext";
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>

@@ -31,7 +31,7 @@ function App() {
           <Songs />
           <Albums />
         </Route>
-        <Route path="/?page=:" exact>
+        <Route path="/?page=&genre=" exact>
           <Signin />
           <Songs />
           <Albums />
