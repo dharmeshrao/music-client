@@ -102,16 +102,24 @@ export const Albums = () => {
     }
   };
   const handleSelect = (e) => {
-    if(year){
-      history.push(`/?year=${year}&genre=${e.target.value}`)
+    if (!e) {
+      if (year) {
+        return history.push(`/?year=${year}`);
+      } else return history.push("/");
     }
-    history.push(`/?genre=${e.target.value}`);
+    if (year) {
+      history.push(`/?year=${year}&genre=${e.target.value}`);
+    } else history.push(`/?genre=${e.target.value}`);
   };
   const handleYear = (e) => {
-    if(y){
-      history.push(`/?genre=${y}&year=${e}`)
+    if (!e) {
+      if (y) {
+        return history.push(`/?genre=${y}`);
+      } else return history.push("/");
     }
-    else history.push(`/?year=${e}`)
+    if (y) {
+      return history.push(`/?genre=${y}&year=${e}`);
+    } else return history.push(`/?year=${e}`);
   };
   useEffect(() => {
     handleFetch();
@@ -130,7 +138,88 @@ export const Albums = () => {
   const { data } = useSelector((store) => store.auth);
 
   if (x > pagelimit.showAll || pagelimit.showAll === 0) {
-    return <div>404 No Page Found</div>;
+    return (
+      <>
+        <Style>
+          <SideBar />
+          <div>
+            <NavbarTop />
+            <div className="Shadow"></div>
+            <div className="browseMusic">
+              <p>Browse albums here</p>
+              <div className="select">
+                <select onChange={(e) => handleSelect(e)} name="sort" id="">
+                  {y ? (
+                    <option hidden value="">
+                      {y}
+                    </option>
+                  ) : (
+                    <option value="">Sort By Genre</option>
+                  )}
+                  <option defaultValue={y === "Pop"} value="Pop">
+                    Pop
+                  </option>
+                  <option defaultValue={y === "Jazz"} value="Jazz">
+                    Jazz
+                  </option>
+                  <option defaultValue={y === "Dance"} value="Dance">
+                    Dance
+                  </option>
+                  <option defaultValue={y === "Hiphop"} value="Hiphop">
+                    Hiphop
+                  </option>
+                  <option defaultValue={y === "Folk"} value="Folk">
+                    Folk
+                  </option>
+                </select>
+                <select
+                  onChange={(e) => handleYear(e.target.value)}
+                  name="sort"
+                  id=""
+                >
+                  {year ? (
+                    <option hidden value="">
+                      {year}
+                    </option>
+                  ) : (
+                    <option hidden value="">
+                      Sort By Year
+                    </option>
+                  )}
+                  <option value="">Show All</option>
+                  <option value="2021">2021</option>
+                  <option value="2020">2020</option>
+                  <option value="2019">2019</option>
+                  <option value="2018">2018</option>
+                </select>
+                <div>
+                  <FcPrevious
+                    className={page === 1 ? "abcd" : ""}
+                    onClick={() => {
+                      if (page <= 1) return;
+                      setPage(page - 1);
+                      handlePageDec(page - 1);
+                    }}
+                  />
+                  <h3>
+                    {x || 1} / {pagelimit.showAll}
+                  </h3>
+                  <FcNext
+                    className="abcd"
+                    onClick={() => {
+                      if (page >= pagelimit.showAll) return;
+                      setPage(page + 1);
+                      handlePageInc(page + 1);
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="cardDiv">No Data Found</div>
+          </div>
+        </Style>
+      </>
+    );
   }
 
   if (data?.token) {
@@ -181,8 +270,11 @@ export const Albums = () => {
                   {y}
                 </option>
               ) : (
-                <option value="">Sort By Genre</option>
+                <option hidden value="">
+                  Sort By Genre
+                </option>
               )}
+              <option value="">Show All</option>
               <option defaultValue={y === "Pop"} value="Pop">
                 Pop
               </option>
@@ -209,8 +301,11 @@ export const Albums = () => {
                   {year}
                 </option>
               ) : (
-                <option value="">Sort By Year</option>
+                <option hidden value="">
+                  Sort By Year
+                </option>
               )}
+              <option value="">Show All</option>
               <option value="2021">2021</option>
               <option value="2020">2020</option>
               <option value="2019">2019</option>
